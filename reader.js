@@ -1,4 +1,4 @@
-const SYMBOL_KEY = '__symbol_key'
+const symbol = require('./symbol')
 
 class Reader {
   constructor(tokens) {
@@ -45,6 +45,8 @@ function readList(reader) {
   for (let next = reader.next(); next !== ')'; next = reader.peek()) {
     result.push(readForm(reader))
   }
+  reader.next()
+
   return result
 }
 
@@ -54,9 +56,9 @@ function readAtom(reader) {
   if (token === 'true') return true
   if (token === 'false') return false
   if (token === 'Nil') return null
-  if (/^[\w]+$/.test(token)) return token
+  if (/^"[\w]"+$/.test(token)) return token.slice(1, -1)
 
-  return { [SYMBOL_KEY]: token }
+  return symbol.create(token)
 }
 
 module.exports = readStr

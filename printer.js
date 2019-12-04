@@ -1,3 +1,5 @@
+const symbol = require('./symbol')
+
 function prStr(data) {
   if (Array.isArray(data)) {
     return `(${data.map(prStr).join(' ')})`
@@ -9,10 +11,11 @@ function prStr(data) {
     case 'number':
       return data.toString(10)
     case 'string':
+      return `"${data}"`
     case 'boolean':
       return data.toString()
     default:
-      return data['__symbol_key']
+      return symbol.getValue(data)
   }
 }
 
